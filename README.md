@@ -26,8 +26,40 @@ It was installed roughly 50 cm above the Nest. We tok care to have the whole nes
 The esp cam in oure case spit out images with differend kinds of defects. We catch the worst of them later on in exeption handling.
 
 ## image recorder
-To generate training data and get an overview wat happens over a day in the chicken nest we had a `downloadImage.py` take pictures evry second. In oure case (maybe becaus of bad WIFI reception) this was the hightes frequence we could get from the ESP-Cam.
-The first day we recordet at full resolution but later we switcht to 800x600 since its still more then enough but eayser on the Wifi and Storge.  
+To generate training data we use the `downloadImage.py` script. The service `chickpic.service` takes care of restarting the python script after a reboot. 
+Create the service:
+```
+sudo nano /etc/systemd/system/chickpic.service
+```
+
+And add the following content to the file:
+
+```
+[Unit]
+Description=My test service
+After=multi-user.target
+[Service]
+Type=simple
+WorkingDirectory = /home/pi/
+Restart=always
+ExecStart=/usr/bin/python3 /home/pi/ChickenAI/dataHelpers/downloadImage.py
+[Install]
+WantedBy=multi-user.target
+```
+To load, enable and start the service:
+
+```
+sudo systemctl daemon-reload
+sudo systemctl enable chickpic.service
+sudo systemctl start test.service
+````
+After making changes to the python script you have to stop and restart the service:
+```
+sudo systemctl stop chickpic.service
+sudo systemctl start chickpic.service
+```
+
+This service will now download a picture every 10 seconds from one of the webcams and saves them in the `pi/training` directory. The log file of this service can be found in `pi/datalog.log`. 
 
 ### dataHelpers
 These helper scripts were created in attempts to filter out unusable data. `checkBrightnes.py` proved most usefull. `imageDifference.py` was a try in sinmple motion detection to throw away images where nothing happens. But for not we actualy have a lot of these "nothing happens" images in oure actual training data to balance the classes of the dataset as this greatly improved the accuracy. `countPixelColors.py` was used to discover the defect images coming from the ESP-Cam.  
