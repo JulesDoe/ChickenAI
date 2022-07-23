@@ -6,18 +6,19 @@ import logging
 import requests
 from datetime import datetime
 import numpy as np
+import time
 
 from PIL import UnidentifiedImageError
 
-logging.basicConfig(level=logging.INFO,
+#logging.basicConfig(level=logging.INFO,
+#                    format='%(name)s - %(levelname)s - %(asctime)s - %(message)s')
+
+logging.basicConfig(filename='log.log',
+                    filemode='a',
+                    level=logging.INFO,
                     format='%(name)s - %(levelname)s - %(asctime)s - %(message)s')
 
-# logging.basicConfig(filename='log.log',
-#                     filemode='a',
-#                     level=logging.INFO,
-#                     format='%(name)s - %(levelname)s - %(asctime)s - %(message)s')
-
-
+img_file_path = "/home/pi/training/"
 
 # Image Downloader
 imgURL = "http://192.168.178.64/snapshot.jpg"
@@ -29,7 +30,7 @@ def getImg():
         logging.info(f"{req.status_code} {req.elapsed}")
 
 
-        file = f'D:\chickenAI\{datetime.now():%Y-%m-%d-%H-%M-%S}.jpg'
+        file = f'{img_file_path}{datetime.now():%Y-%m-%d-%H-%M-%S}.jpg'
         logging.info(file)
         with open(file, 'wb') as handler:
             handler.write(img_data)
@@ -62,21 +63,21 @@ def predict(imageFile):
 
         predictions = model.predict(img_array)
         score = tf.nn.softmax(predictions[0])
-
         # print(
         #     "This image most likely belongs to {} with a {:.2f} percent confidence."
         #     .format(class_names[np.argmax(score)], 100 * np.max(score))
         # )
-        bla = {
+        prediction = {
             "class":class_names[np.argmax(score)],
             "probability":100 * np.max(score)
             }
+
     except UnidentifiedImageError as e:
         logging.warn(f"Wierd Image {imageFile} {e}")
-        bla = None
+        prediction = None
 
 
-    return bla
+    return prediction
 
 
 # Server
