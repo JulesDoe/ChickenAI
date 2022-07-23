@@ -119,6 +119,15 @@ conda create -n tfjs python=3.6.8
 we created the following command through the `tensorflowjs_wizard`
 `tensorflowjs_converter --input_format=keras --metadata= --output_format=tfjs_layers_model --weight_shard_size_bytes=4194304 model/model.h5 model/export`
 
+
+### Things to look into
+https://www.researchgate.net/post/Requirements-for-Imagesdataset-for-an-image-classification-problem
+https://towardsdatascience.com/how-do-you-know-you-have-enough-training-data-ad9b1fd679ee
+https://towardsdatascience.com/a-brief-introduction-to-time-series-classification-algorithms-7b4284d31b97
+https://github.com/tensorflow/tfjs/tree/master/tfjs-converter
+https://towardsdatascience.com/how-to-cluster-images-based-on-visual-similarity-cd6e7209fe34
+https://betterprogramming.pub/how-to-measure-image-similarities-in-python-12f1cb2b7281
+
 # 🐓 License
 (of course) Chicken Dance License v0.2
 
