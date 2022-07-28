@@ -91,7 +91,7 @@ There is a hacky way to load generic tensorflow.js models in Node-RED with a bit
 
 ## Workflow
 - setup hardware
-- collect data
+- collect data (probably far from optimal but working example dataset: https://drive.google.com/file/d/1yQ75bDcFSswsvrWwFwCvVWza8YoDvhX0)
 - lable data
 - train classifier on your data
 - setup webservice
